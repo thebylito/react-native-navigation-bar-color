@@ -6,6 +6,7 @@ package com.thebylito.navigationbarcolor;
 import android.graphics.Color;
 import android.os.Build;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
@@ -55,20 +56,32 @@ public class NavigationBarColorModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void changeNavigationBarColor(String color, Promise promise) {
+    public void changeNavigationBarColor(final String color, final Boolean light, final Promise promise) {
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                getCurrentActivity().getWindow().setNavigationBarColor(Color.parseColor(String.valueOf(color)));
-                WritableMap map = Arguments.createMap();
-                map.putBoolean("success", true);
-                promise.resolve(map);
-            }else{
 
-                WritableMap map = Arguments.createMap();
-                map.putBoolean("success", false);
-                map.putString("message", "Lollpop or more required");
-                promise.reject((Throwable) map);
-            }
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        getCurrentActivity().getWindow().setNavigationBarColor(Color.parseColor(String.valueOf(color)));
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && light) {
+                            getCurrentActivity().getWindow().addFlags(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
+                        }
+                    } else {
+
+                        WritableMap map = Arguments.createMap();
+                        map.putBoolean("success", false);
+                        map.putString("message", "Lollpop or more required");
+                        promise.reject((Throwable) map);
+                    }
+
+                    WritableMap map = Arguments.createMap();
+                    map.putBoolean("success", true);
+                    promise.resolve(map);
+                }
+            });
+
 
         } catch (IllegalViewOperationException e) {
             WritableMap map = Arguments.createMap();
@@ -102,7 +115,9 @@ public class NavigationBarColorModule extends ReactContextBaseJavaModule {
                 @Override
                 public void run() {
                     View decorView = getCurrentActivity().getWindow().getDecorView();
+
                     int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
+
                     decorView.setSystemUiVisibility(uiOptions);
                 }
             });

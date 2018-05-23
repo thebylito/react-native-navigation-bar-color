@@ -107,10 +107,13 @@ export default class Mynewapp extends Component {
 
 ## API
 
-### `changeNavigationBarColor(color)`: (Android)
+### `changeNavigationBarColor(color, Boolean(light icon color) )`: (Android)
 Change color of Navigation/Bottom bar.
 color can be a HEX color, or name.
 ex: green, blue, #80b3ff, #ffffff....
+
+Light is true? icon color may be White.
+False? May be a Black or Gray.
 
 - Returns a `Promise`
 
@@ -118,6 +121,20 @@ ex: green, blue, #80b3ff, #ffffff....
   example = async () => {
       try{
           const response = await changeNavigationBarColor('#80b3ff');
+          console.log(response)// {success: true}
+      }catch(e){
+          console.log(e)// {success: false}
+      }
+    
+  };
+```
+
+##OR
+
+```javascript
+  example = async () => {
+      try{
+          const response = await changeNavigationBarColor('#80b3ff', true);
           console.log(response)// {success: true}
       }catch(e){
           console.log(e)// {success: false}
