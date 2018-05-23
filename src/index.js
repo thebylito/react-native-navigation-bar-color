@@ -4,5 +4,9 @@ const { NavigationBarColor } = NativeModules;
 
 const changeNavigationBarColor = (color = String) =>
   NavigationBarColor.changeNavigationBarColor(color);
+const HideNavigationBar = () =>
+  NavigationBarColor.HideNavigationBar();
+const ShowNavigationBar = () =>
+  NavigationBarColor.ShowNavigationBar();
 
-export { changeNavigationBarColor };
+export { changeNavigationBarColor, HideNavigationBar, ShowNavigationBar };

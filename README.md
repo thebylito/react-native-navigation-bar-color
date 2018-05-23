@@ -46,16 +46,22 @@ React Native Navigation Bar Color Change is a [React Native](http://facebook.git
 **Android Implementation**
 ```javascript
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
-import changeNavigationBarColor from 'react-native-navigation-bar-color';
+import { View, Text, Button } from 'react-native';
+import changeNavigationBarColor, {
+  HideNavigationBar,
+  ShowNavigationBar,
+} from 'react-native-navigation-bar-color';
 
 export default class Mynewapp extends Component {
-  componentDidMount = () => {
-    this.example();
+  setNavigationColor = (color) => {
+    changeNavigationBarColor(color);
+  };
+  hideNavigation = () => {
+    HideNavigationBar();
   };
 
-  example = () => {
-    changeNavigationBarColor('red');
+  showNavigation = () => {
+    ShowNavigationBar();
   };
 
   render() {
@@ -63,10 +69,35 @@ export default class Mynewapp extends Component {
       <View
         style={{
           flex: 1,
-          justifyContent: 'center',
+          justifyContent: 'space-around',
+          alignContent: 'center',
           alignItems: 'center',
         }}
       >
+        <Button
+          title="Set color red"
+          onPress={() => {
+            this.setNavigationColor('red');
+          }}
+        />
+        <Button
+          title="Set color blue"
+          onPress={() => {
+            this.setNavigationColor('blue');
+          }}
+        />
+        <Button
+          title="Hide bar"
+          onPress={() => {
+            this.hideNavigation();
+          }}
+        />
+        <Button
+          title="Show bar"
+          onPress={() => {
+            this.showNavigation();
+          }}
+        />
         <Text>Hello Word!</Text>
       </View>
     );
@@ -92,6 +123,28 @@ ex: green, blue, #80b3ff, #ffffff....
           console.log(e)// {success: false}
       }
     
+  };
+```
+
+### `HideNavigationBar()`: (Android)
+Hide Navigation Bar
+
+```javascript
+  import { HideNavigationBar } from 'react-native-navigation-bar-color';
+ ...
+  hide = () => {
+      HideNavigationBar();
+  };
+```
+
+### `ShowNavigationBar()`: (Android)
+Show Navigation Bar
+
+```javascript
+  import { ShowNavigationBar } from 'react-native-navigation-bar-color';
+ ...
+  show = () => {
+      ShowNavigationBar();
   };
 ```
 
