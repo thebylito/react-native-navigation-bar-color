@@ -33,9 +33,8 @@ React Native Navigation Bar Color Change is a [React Native](http://facebook.git
   - Add `import com.thebylito.navigationbarcolor.NavigationBarColorPackage;` to the imports at the top of the file
   - Add `new NavigationBarColorPackage()` to the list returned by the `getPackages()` method
 2. Append the following lines to `android/settings.gradle`:
-  	```
-include ':react-native-navigation-bar-color'
-project(':react-native-navigation-bar-color').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-navigation-bar-color/android')
+  	```include ':react-native-navigation-bar-color'
+        project(':react-native-navigation-bar-color').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-navigation-bar-color/android')
   	```
 3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
   	```
