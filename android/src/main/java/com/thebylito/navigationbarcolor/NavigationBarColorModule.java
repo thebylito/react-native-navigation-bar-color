@@ -3,9 +3,12 @@
 package com.thebylito.navigationbarcolor;
 
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.os.Build;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 
 import com.facebook.react.bridge.Arguments;
@@ -63,7 +66,23 @@ public class NavigationBarColorModule extends ReactContextBaseJavaModule {
                 @Override
                 public void run() {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        getCurrentActivity().getWindow().setNavigationBarColor(Color.parseColor(String.valueOf(color)));
+
+                        final Window window = getCurrentActivity().getWindow();
+                        Integer colorFrom = window.getNavigationBarColor();
+                        Integer colorTo = Color.parseColor(String.valueOf(color));
+                        //window.setNavigationBarColor(colorTo);
+                        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+                        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animator) {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    window.setNavigationBarColor((Integer) animator.getAnimatedValue());
+                                }
+                            }
+
+                        });
+                        colorAnimation.start();
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && light) {
                             getCurrentActivity().getWindow().addFlags(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
