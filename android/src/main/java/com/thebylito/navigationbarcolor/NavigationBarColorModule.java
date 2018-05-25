@@ -91,7 +91,7 @@ public class NavigationBarColorModule extends ReactContextBaseJavaModule {
 
                         WritableMap map = Arguments.createMap();
                         map.putBoolean("success", false);
-                        map.putString("message", "Lollpop or more required");
+                        map.putString("message", "Lollipop or more required");
                         promise.reject((Throwable) map);
                     }
 
@@ -147,6 +147,3 @@ public class NavigationBarColorModule extends ReactContextBaseJavaModule {
         }
     }
 }
-
-
-
