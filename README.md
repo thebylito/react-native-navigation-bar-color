@@ -57,11 +57,11 @@ export default class Mynewapp extends Component {
   setNavigationColor = (color) => {
     changeNavigationBarColor(color);
   };
-  hideNavigation = () => {
+  hideNavigation() {
     HideNavigationBar();
   };
 
-  showNavigation = () => {
+  showNavigation() {
     ShowNavigationBar();
   };
 
@@ -89,15 +89,11 @@ export default class Mynewapp extends Component {
         />
         <Button
           title="Hide bar"
-          onPress={() => {
-            this.hideNavigation();
-          }}
+          onPress={this.hideNavigation}
         />
         <Button
           title="Show bar"
-          onPress={() => {
-            this.showNavigation();
-          }}
+          onPress={this.showNavigation}
         />
         <Text>Hello Word!</Text>
       </View>
