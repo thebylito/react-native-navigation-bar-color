@@ -7,6 +7,7 @@ import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.os.Build;
+import android.app.Activity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -38,6 +39,22 @@ public class NavigationBarColorModule extends ReactContextBaseJavaModule {
         // https://facebook.github.io/react-native/docs/native-modules-android.html#the-toast-module
         super(context);
         reactContext = context;
+    }
+    
+    private void setLightStatusBar(Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            int flags = activity.getWindow().getDecorView().getSystemUiVisibility(); // get current flag
+            flags |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;   // add LIGHT_STATUS_BAR to flag
+            activity.getWindow().getDecorView().setSystemUiVisibility(flags); 
+        }
+    }
+
+    private void setDarkStatusBar(Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            int flags = activity.getWindow().getDecorView().getSystemUiVisibility(); // get current flag
+            flags = flags ^ View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR; // use XOR here for remove LIGHT_STATUS_BAR from flags
+            activity.getWindow().getDecorView().setSystemUiVisibility(flags);
+        }
     }
 
 
@@ -82,11 +99,14 @@ public class NavigationBarColorModule extends ReactContextBaseJavaModule {
                             }
 
                         });
-                        colorAnimation.start();
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && light) {
-                            getCurrentActivity().getWindow().addFlags(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-
+                        
+                        if (light) {
+                            setLightStatusBar(getCurrentActivity());
+                        } else {
+                            setDarkStatusBar(getCurrentActivity());
                         }
+                        
+                        colorAnimation.start();
                     } else {
 
                         WritableMap map = Arguments.createMap();
