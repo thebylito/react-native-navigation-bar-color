@@ -7,6 +7,7 @@ import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.os.Build;
+import android.app.Activity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -38,6 +39,21 @@ public class NavigationBarColorModule extends ReactContextBaseJavaModule {
         // https://facebook.github.io/react-native/docs/native-modules-android.html#the-toast-module
         super(context);
         reactContext = context;
+    }
+    
+    public void setNavigationBarTheme(Activity activity, Boolean light) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Window window = activity.getWindow();
+            int flags = window.getDecorView().getSystemUiVisibility();
+
+            if(light) {
+                flags |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            } else {
+                flags &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            }
+
+            window.getDecorView().setSystemUiVisibility(flags);
+        }
     }
 
 
@@ -82,11 +98,10 @@ public class NavigationBarColorModule extends ReactContextBaseJavaModule {
                             }
 
                         });
+                        
                         colorAnimation.start();
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && light) {
-                            getCurrentActivity().getWindow().addFlags(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-
-                        }
+                        
+                        setNavigationBarTheme(getCurrentActivity(), light);
                     } else {
 
                         WritableMap map = Arguments.createMap();
