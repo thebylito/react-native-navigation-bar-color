@@ -10,6 +10,7 @@ React Native Navigation Bar Color Change is a [React Native](http://facebook.git
 <img src="https://github.com/thebylito/react-native-navigation-bar-color/raw/master/screenshots/screenShot1.jpg" height="600">
 <img src="https://github.com/thebylito/react-native-navigation-bar-color/raw/master/screenshots/screenShot2.jpg" height="600">
 <img src="https://github.com/thebylito/react-native-navigation-bar-color/raw/master/screenshots/screenShot3.jpg" height="600">
+<img src="https://user-images.githubusercontent.com/29806253/46919604-96247c00-cfaf-11e8-996a-81330dad6562.png" height="600">
 </div>
 
 ## Table of Contents
@@ -75,6 +76,7 @@ export default class Mynewapp extends Component {
           justifyContent: 'space-around',
           alignContent: 'center',
           alignItems: 'center',
+          backgroundColor: 'white'
         }}
       >
         <Button
@@ -87,6 +89,12 @@ export default class Mynewapp extends Component {
           title="Set color blue"
           onPress={() => {
             this.setNavigationColor('blue');
+          }}
+        />
+        <Button
+          title="Set color ligth"
+          onPress={() => {
+            changeNavigationBarColor('#ffffff', true);
           }}
         />
         <Button
@@ -111,8 +119,7 @@ Change color of Navigation/Bottom bar.
 color can be a HEX color, or name.
 ex: green, blue, #80b3ff, #ffffff....
 
-Light is true? icon color may be White.
-False? May be a Black or Gray.
+Light is true? icons will be dark.
 
 - Returns a `Promise`
 
