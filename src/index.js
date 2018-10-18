@@ -1,12 +1,25 @@
-import { NativeModules } from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 
 const { NavigationBarColor } = NativeModules;
 
 const changeNavigationBarColor = (color = String, light = false) => {
-  const LightNav = light ? true : false;
-  NavigationBarColor.changeNavigationBarColor(color, LightNav);
+  if(Platform.OS === 'android') {
+    const LightNav = light ? true : false;
+    NavigationBarColor.changeNavigationBarColor(color, LightNav);
+  }
 };
-const HideNavigationBar = () => NavigationBarColor.HideNavigationBar();
-const ShowNavigationBar = () => NavigationBarColor.ShowNavigationBar();
-
+const HideNavigationBar = () => {
+  if(Platform.OS === 'android') {
+    return NavigationBarColor.HideNavigationBar();
+  } else {
+    return false;
+  }
+};
+const ShowNavigationBar = () => {
+  if(Platform.OS === 'android') {
+    NavigationBarColor.ShowNavigationBar();
+  } else {
+    return false;
+  }
+};
 export { changeNavigationBarColor, HideNavigationBar, ShowNavigationBar };
