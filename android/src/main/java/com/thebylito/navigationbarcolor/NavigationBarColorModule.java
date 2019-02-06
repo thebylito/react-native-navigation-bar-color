@@ -102,17 +102,13 @@ public class NavigationBarColorModule extends ReactContextBaseJavaModule {
                         colorAnimation.start();
                         
                         setNavigationBarTheme(getCurrentActivity(), light);
-                    } else {
 
                         WritableMap map = Arguments.createMap();
-                        map.putBoolean("success", false);
-                        map.putString("message", "Lollipop or more required");
-                        promise.reject((Throwable) map);
+                        map.putBoolean("success", true);
+                        promise.resolve(map);
+                    } else {
+                        promise.reject("NOT_SUPPORTED", new Throwable("Not Supported"));
                     }
-
-                    WritableMap map = Arguments.createMap();
-                    map.putBoolean("success", true);
-                    promise.resolve(map);
                 }
             });
 
