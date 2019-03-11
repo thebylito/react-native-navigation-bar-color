@@ -40,13 +40,13 @@ public class NavigationBarColorModule extends ReactContextBaseJavaModule {
         super(context);
         reactContext = context;
     }
-    
+
     public void setNavigationBarTheme(Activity activity, Boolean light) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Window window = activity.getWindow();
             int flags = window.getDecorView().getSystemUiVisibility();
 
-            if(light) {
+            if (light) {
                 flags |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
             } else {
                 flags &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
@@ -82,37 +82,34 @@ public class NavigationBarColorModule extends ReactContextBaseJavaModule {
                 @Override
                 public void run() {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        if (getCurrentActivity() != null) {
+                            final Window window = getCurrentActivity().getWindow();
+                            Integer colorFrom = window.getNavigationBarColor();
+                            Integer colorTo = Color.parseColor(String.valueOf(color));
+                            //window.setNavigationBarColor(colorTo);
+                            ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+                            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
-                        final Window window = getCurrentActivity().getWindow();
-                        Integer colorFrom = window.getNavigationBarColor();
-                        Integer colorTo = Color.parseColor(String.valueOf(color));
-                        //window.setNavigationBarColor(colorTo);
-                        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-                        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-
-                            @Override
-                            public void onAnimationUpdate(ValueAnimator animator) {
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    window.setNavigationBarColor((Integer) animator.getAnimatedValue());
+                                @Override
+                                public void onAnimationUpdate(ValueAnimator animator) {
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                        window.setNavigationBarColor((Integer) animator.getAnimatedValue());
+                                    }
                                 }
-                            }
 
-                        });
-                        
-                        colorAnimation.start();
-                        
-                        setNavigationBarTheme(getCurrentActivity(), light);
+                            });
+                            colorAnimation.start();
+
+                            setNavigationBarTheme(getCurrentActivity(), light);
+
+                            WritableMap map = Arguments.createMap();
+                            map.putBoolean("success", true);
+                            promise.resolve(map);
+                        }
+
                     } else {
-
-                        WritableMap map = Arguments.createMap();
-                        map.putBoolean("success", false);
-                        map.putString("message", "Lollipop or more required");
-                        promise.reject((Throwable) map);
+                        promise.reject("NOT_SUPPORTED", new Throwable("Not Supported"));
                     }
-
-                    WritableMap map = Arguments.createMap();
-                    map.putBoolean("success", true);
-                    promise.resolve(map);
                 }
             });
 
