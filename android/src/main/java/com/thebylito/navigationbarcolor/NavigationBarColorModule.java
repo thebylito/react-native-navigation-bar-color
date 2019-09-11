@@ -42,7 +42,7 @@ public class NavigationBarColorModule extends ReactContextBaseJavaModule {
     }
 
     public void setNavigationBarTheme(Activity activity, Boolean light) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (activity != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Window window = activity.getWindow();
             int flags = window.getDecorView().getSystemUiVisibility();
 
@@ -128,8 +128,10 @@ public class NavigationBarColorModule extends ReactContextBaseJavaModule {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    View decorView = getCurrentActivity().getWindow().getDecorView();
-                    decorView.setSystemUiVisibility(UI_FLAG_HIDE_NAV_BAR);
+                    if (getCurrentActivity() != null) {
+                        View decorView = getCurrentActivity().getWindow().getDecorView();
+                        decorView.setSystemUiVisibility(UI_FLAG_HIDE_NAV_BAR);
+                    }
                 }
             });
         } catch (IllegalViewOperationException e) {
@@ -145,11 +147,13 @@ public class NavigationBarColorModule extends ReactContextBaseJavaModule {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    View decorView = getCurrentActivity().getWindow().getDecorView();
+                    if (getCurrentActivity() != null) {
+                        View decorView = getCurrentActivity().getWindow().getDecorView();
 
-                    int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
+                        int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
 
-                    decorView.setSystemUiVisibility(uiOptions);
+                        decorView.setSystemUiVisibility(uiOptions);
+                    }
                 }
             });
         } catch (IllegalViewOperationException e) {
