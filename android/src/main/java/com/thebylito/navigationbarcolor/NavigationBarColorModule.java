@@ -75,7 +75,7 @@ public class NavigationBarColorModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void changeNavigationBarColor(final String color, final Boolean light, final Promise promise) {
+    public void changeNavigationBarColor(final String color, final Boolean light, final Boolean withoutAnimation, final Promise promise) {
         try {
 
             runOnUiThread(new Runnable() {
@@ -84,21 +84,26 @@ public class NavigationBarColorModule extends ReactContextBaseJavaModule {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         if (getCurrentActivity() != null) {
                             final Window window = getCurrentActivity().getWindow();
-                            Integer colorFrom = window.getNavigationBarColor();
-                            Integer colorTo = Color.parseColor(String.valueOf(color));
-                            //window.setNavigationBarColor(colorTo);
-                            ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-                            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
-                                @Override
-                                public void onAnimationUpdate(ValueAnimator animator) {
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                        window.setNavigationBarColor((Integer) animator.getAnimatedValue());
-                                    }
-                                }
+                            if (withoutAnimation) {
+                              window.setNavigationBarColor(Color.parseColor(String.valueOf(color)));
+                            } else {
+                              Integer colorFrom = window.getNavigationBarColor();
+                              Integer colorTo = Color.parseColor(String.valueOf(color));
+                              //window.setNavigationBarColor(colorTo);
+                              ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+                              colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
-                            });
-                            colorAnimation.start();
+                                  @Override
+                                  public void onAnimationUpdate(ValueAnimator animator) {
+                                      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                          window.setNavigationBarColor((Integer) animator.getAnimatedValue());
+                                      }
+                                  }
+
+                              });
+                              colorAnimation.start();
+                            }
 
                             setNavigationBarTheme(getCurrentActivity(), light);
 
