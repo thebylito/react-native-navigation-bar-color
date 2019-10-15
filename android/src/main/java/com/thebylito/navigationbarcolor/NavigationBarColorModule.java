@@ -75,7 +75,7 @@ public class NavigationBarColorModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void changeNavigationBarColor(final String color, final Boolean light, final Boolean withoutAnimation, final Promise promise) {
+    public void changeNavigationBarColor(final String color, final Boolean light, final Boolean animated, final Promise promise) {
         try {
 
             runOnUiThread(new Runnable() {
@@ -85,7 +85,7 @@ public class NavigationBarColorModule extends ReactContextBaseJavaModule {
                         if (getCurrentActivity() != null) {
                             final Window window = getCurrentActivity().getWindow();
 
-                            if (withoutAnimation) {
+                            if (!animated) {
                               window.setNavigationBarColor(Color.parseColor(String.valueOf(color)));
                             } else {
                               Integer colorFrom = window.getNavigationBarColor();
