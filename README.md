@@ -114,7 +114,7 @@ export default class Mynewapp extends Component {
 
 ## API
 
-### `changeNavigationBarColor(color, Boolean(light icon color) )`: (Android)
+### `changeNavigationBarColor(color, Boolean(light icon color), Boolean(animated - default is true))`: (Android)
 Change color of Navigation/Bottom bar.
 color can be a HEX color, or name.
 ex: green, blue, #80b3ff, #ffffff....

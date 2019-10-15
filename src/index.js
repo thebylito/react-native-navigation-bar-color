@@ -2,10 +2,10 @@ import { NativeModules, Platform } from 'react-native';
 
 const { NavigationBarColor } = NativeModules;
 
-const changeNavigationBarColor = (color = String, light = false, withoutAnimation = false) => {
+const changeNavigationBarColor = (color = String, light = false, animated = true) => {
   if(Platform.OS === 'android') {
     const LightNav = light ? true : false;
-    NavigationBarColor.changeNavigationBarColor(color, LightNav, withoutAnimation);
+    NavigationBarColor.changeNavigationBarColor(color, LightNav, animated);
   }
 };
 const HideNavigationBar = () => {
