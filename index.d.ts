@@ -1,8 +1,8 @@
 declare module "react-native-navigation-bar-color" {
     function changeNavigationBarColor(color: string, light: boolean, animated: boolean): void;
-    function HideNavigationBar(): boolean;
-    function ShowNavigationBar(): boolean;
+    function hideNavigationBar(): boolean;
+    function showNavigationBar(): boolean;
 
     export default changeNavigationBarColor;
-    export { HideNavigationBar, ShowNavigationBar };
+    export { hideNavigationBar, showNavigationBar };
 }
