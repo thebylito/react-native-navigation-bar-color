@@ -67,76 +67,81 @@ or
 
 ## Example
 
-**Android Implementation**
+<details>
+<summary>**Android Implementation**</summary>
+
 ```javascript
-import React, { Component } from 'react';
-import { View, Text, Button } from 'react-native';
+import React from 'react';
+import {View, Text, Button} from 'react-native';
 import changeNavigationBarColor, {
-  HideNavigationBar,
-  ShowNavigationBar,
+  hideNavigationBar,
+  showNavigationBar,
 } from 'react-native-navigation-bar-color';
 
-export default class Mynewapp extends Component {
-  setNavigationColor = (color) => {
+export default function App() {
+  const setNavigationColor = color => {
     changeNavigationBarColor(color);
   };
-  hideNavigation() {
-    HideNavigationBar();
+  const hideNavigation = () => {
+    hideNavigationBar();
   };
 
-  showNavigation() {
-    ShowNavigationBar();
+  const showNavigation = () => {
+    showNavigationBar();
   };
 
-  render() {
-    return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'space-around',
-          alignContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'white'
+  const testSetTranslucent = () => {
+    changeNavigationBarColor('translucent', false);
+  };
+
+  const testSetTransparent = () => {
+    changeNavigationBarColor('transparent', true);
+  };
+
+  return (
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'space-around',
+        alignContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'cyan',
+      }}>
+      <Button title="Set transparent" onPress={testSetTransparent} />
+      <Button title="Set translucent" onPress={testSetTranslucent} />
+      <Button
+        title="Set color red"
+        onPress={() => {
+          setNavigationColor('red');
         }}
-      >
-        <Button
-          title="Set color red"
-          onPress={() => {
-            this.setNavigationColor('red');
-          }}
-        />
-        <Button
-          title="Set color blue"
-          onPress={() => {
-            this.setNavigationColor('blue');
-          }}
-        />
-        <Button
-          title="Set color ligth"
-          onPress={() => {
-            changeNavigationBarColor('#ffffff', true);
-          }}
-        />
-        <Button
-          title="Hide bar"
-          onPress={this.hideNavigation}
-        />
-        <Button
-          title="Show bar"
-          onPress={this.showNavigation}
-        />
-        <Text>Hello Word!</Text>
-      </View>
-    );
-  }
+      />
+      <Button
+        title="Set color blue"
+        onPress={() => {
+          setNavigationColor('blue');
+        }}
+      />
+      <Button
+        title="Set color ligth"
+        onPress={() => {
+          changeNavigationBarColor('#ffffff', true);
+        }}
+      />
+      <Button title="Hide bar" onPress={hideNavigation} />
+      <Button title="Show bar" onPress={showNavigation} />
+      <Text>Hello Word!</Text>
+    </View>
+  );
 }
 ```
+</details>
 
 ## API
 
 ### `changeNavigationBarColor(color, Boolean(light icon color), Boolean(animated - default is true))`: (Android)
 Change color of Navigation/Bottom bar.
-color can be a HEX color, or name.
+color can be a "translucent" | "transparent" | HEX color, or name.
+
 ex: green, blue, #80b3ff, #ffffff....
 
 Light is true? icons will be dark.
@@ -169,25 +174,25 @@ Light is true? icons will be dark.
   };
 ```
 
-### `HideNavigationBar()`: (Android)
+### `hideNavigationBar()`: (Android)
 Hide Navigation Bar
 
 ```javascript
-  import { HideNavigationBar } from 'react-native-navigation-bar-color';
+  import { hideNavigationBar } from 'react-native-navigation-bar-color';
  ...
   hide = () => {
-      HideNavigationBar();
+      hideNavigationBar();
   };
 ```
 
-### `ShowNavigationBar()`: (Android)
+### `showNavigationBar()`: (Android)
 Show Navigation Bar
 
 ```javascript
-  import { ShowNavigationBar } from 'react-native-navigation-bar-color';
+  import { showNavigationBar } from 'react-native-navigation-bar-color';
  ...
   show = () => {
-      ShowNavigationBar();
+      showNavigationBar();
   };
 ```
 
