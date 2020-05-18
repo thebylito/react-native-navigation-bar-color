@@ -9,7 +9,7 @@ const changeNavigationBarColor = (
 ) => {
   if (Platform.OS === 'android') {
     const LightNav = light ? true : false;
-    NavigationBarColor.changeNavigationBarColor(color, LightNav, animated);
+    return NavigationBarColor.changeNavigationBarColor(color, LightNav, animated);
   }
 };
 const hideNavigationBar = () => {
