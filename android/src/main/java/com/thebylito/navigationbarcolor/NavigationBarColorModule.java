@@ -69,13 +69,13 @@ public class NavigationBarColorModule extends ReactContextBaseJavaModule {
         // Export any constants to be used in your native module
         // https://facebook.github.io/react-native/docs/native-modules-android.html#the-toast-module
         final Map<String, Object> constants = new HashMap<>();
-        constants.put("EXAMPLE_CONSTANT", "example");
+        // constants.put("EXAMPLE_CONSTANT", "example");
 
         return constants;
     }
 
     @ReactMethod
-    public void changeNavigationBarColor(final String color, final Boolean light, final Boolean animated, final Promise promise) {
+    public void changeNavigationBarColor(final Integer color, final Boolean light, final Boolean animated, final Promise promise) {
         final WritableMap map = Arguments.createMap();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (getCurrentActivity() != null) {
@@ -84,10 +84,11 @@ public class NavigationBarColorModule extends ReactContextBaseJavaModule {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (color.equals("transparent") || color.equals("translucent")) {
+                            // processColor "translucent" => null
+                            if (color.equals(0) || color==null) {
                                 window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
                                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-                                if (color.equals("transparent")) {
+                                if (color!=null) {
                                     window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
                                 } else {
                                     window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
@@ -102,9 +103,7 @@ public class NavigationBarColorModule extends ReactContextBaseJavaModule {
                             }
                             if (animated) {
                                 Integer colorFrom = window.getNavigationBarColor();
-                                Integer colorTo = Color.parseColor(String.valueOf(color));
-                                //window.setNavigationBarColor(colorTo);
-                                ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+                                ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, color.intValue());
                                 colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                                     @Override
                                     public void onAnimationUpdate(ValueAnimator animator) {
@@ -113,7 +112,7 @@ public class NavigationBarColorModule extends ReactContextBaseJavaModule {
                                 });
                                 colorAnimation.start();
                             } else {
-                                window.setNavigationBarColor(Color.parseColor(String.valueOf(color)));
+                                window.setNavigationBarColor(color.intValue());
                             }
                             setNavigationBarTheme(getCurrentActivity(), light);
                             WritableMap map = Arguments.createMap();
