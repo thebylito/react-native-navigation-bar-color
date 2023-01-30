@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.WindowInsetsController;
 import androidx.annotation.UiThread;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
@@ -44,18 +45,30 @@ public class NavigationBarColorModule extends ReactContextBaseJavaModule {
     }
 
     public void setNavigationBarTheme(Activity activity, Boolean light) {
-        if (activity != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Window window = activity.getWindow();
-            int flags = window.getDecorView().getSystemUiVisibility();
-            if (light) {
-                flags |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
-            } else {
-                flags &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+        if (activity != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+                Window window = activity.getWindow();
+                int flags = window.getDecorView().getSystemUiVisibility();
+                if (light) {
+                    flags |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+                } else {
+                    flags &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+                }
+                window.getDecorView().setSystemUiVisibility(flags);
             }
-            window.getDecorView().setSystemUiVisibility(flags);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                int flag;
+                if (light) {
+                    flag = WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS;
+                } else {
+                    flag = 0;
+                }
+                final WindowInsetsController insetsController = activity.getWindow().getInsetsController();
+                insetsController.setSystemBarsAppearance(flag, WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS);
+            }
         }
     }
-
 
     @Override
     public String getName() {
